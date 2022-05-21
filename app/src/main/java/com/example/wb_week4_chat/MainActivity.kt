@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener,
         for (i in 1..100) {
             count += 1
             var dinamicLayoutView = layoutInflater.inflate(R.layout.chat_layout, null)
-            dinamicLayoutView.findViewById<TextView>(R.id.textViewChat).text = "Текст чата ${count.toString()}"
+            dinamicLayoutView.findViewById<TextView>(R.id.textViewChat).text = count.toString()  + " чат"
             arrayView.add(dinamicLayoutView)
         }
 
@@ -85,28 +85,22 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener,
         val view = scrollView.getChildAt(scrollView.childCount - 1)
         val topDetector = scrollView.scrollY
         val bottomDetector: Int = view.bottom - (scrollView.height + scrollView.scrollY)
-            // Если пользователь доскроллил до нижнего края, то добавляем еще один элемент из массива списка чатов arrayView и удаляем верхний элемент
+            // Если пользователь доскроллил до нижнего края, то добавляем еще один элемент из массива списка чатов arrayView
         if (bottomDetector == 0) {
                 if (countView + 1 <= arrayView.size) {
-                    layout.removeView(arrayView[countView - 10])
-                    layout.removeView(arrayView[countView])
+
                     layout.addView(arrayView[countView])
 
                     countView += 1
-                } else {
-                     swipeToRefresh()
                 }
         }
-        // Если пользователь доскроллил до верхнего края, то добавляем еще один элемент вверх из массива списка чатов arrayView и удаляем нижний элемент
+        // Если пользователь доскроллил до верхнего края, то обновляем весь список
 
         if (topDetector <= 0) {
 
-                if (countView > 10) {
-                    layout.removeView(arrayView[countView])
-                    layout.removeView(arrayView[countView - 11])
-                    layout.addView(arrayView[countView - 11], 0)
-                    countView -= 1
-            }
+                swipeToRefresh()
+
+
         }
     }
 }
